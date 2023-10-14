@@ -3,8 +3,6 @@ import "./App.css";
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
 import PREV from "./assets/prev.png";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import CKEditor from "@ckeditor/ckeditor5-react";
 
 const Home = () => {
   const [loader, setLoader] = useState(false);
@@ -20,6 +18,7 @@ const Home = () => {
     message: "",
   });
 
+  console.log(formData.message);
   const url = `${import.meta.env.VITE_BASE_SEND_MAIL_API_URL}`;
   const formDetails = {
     senderFirstName: formData.senderFirstName,
@@ -121,15 +120,6 @@ const Home = () => {
             />
           </div>
         </div>
-        <div className="first col">
-          <label htmlFor="subject">Sender's email</label>
-          <input
-            type="email"
-            name="senderEmail"
-            value={formData.senderEmail}
-            onChange={handleChange}
-          />
-        </div>
         <div className="second">
           <div className="col">
             <label htmlFor="Firstname">Recipient email</label>
@@ -170,10 +160,21 @@ const Home = () => {
             style={{
               width: "100%",
               height: "fit-content",
-              display: isOpen ? "block" : "none",
+              display: isOpen ? "flex" : "none",
+              flexDirection: "column",
+              gap: "8px",
               margin: "15px 0px",
             }}
           >
+            <div className="first col">
+              <label htmlFor="subject">Sender's email</label>
+              <input
+                type="email"
+                name="senderEmail"
+                value={formData.senderEmail}
+                onChange={handleChange}
+              />
+            </div>
             <div className="first col">
               <label htmlFor="subject">Subject Matter</label>
               <input
