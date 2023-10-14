@@ -6,13 +6,14 @@
 
 .container {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   position: relative;
   z-index: 10;
+  overflow-x: clip;
 }
 
 h1 {
@@ -96,11 +97,46 @@ button {
   align-items: center;
 }
 
+.accordion {
+  border: 1px solid #ccc;
+  margin: 10px;
+  overflow: hidden;
+  border-radius: 4px;
+  transition: max-height 0.3s ease-in-out;
+  max-height: 0;
+}
+
+.accordion.open {
+  max-height: 100px; /* Adjust this value as needed for your content */
+}
+
+.accordion-header {
+  background-color: #f1f1f1;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-header .icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+.accordion.open .icon {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  padding: 10px;
+}
+
+
 @media (max-width: 426px) {
   form {
     width: 310px;
   }
-  .first{
+  .first {
     width: 85%;
   }
   .second {
@@ -108,10 +144,10 @@ button {
     width: 300px;
     gap: 8px;
   }
-  .second div:nth-child(1){
+  .second div:nth-child(1) {
     width: 80%;
   }
-  .second div:nth-child(2){
+  .second div:nth-child(2) {
     width: 80%;
   }
   button {

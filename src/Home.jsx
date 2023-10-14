@@ -3,6 +3,8 @@ import "./App.css";
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
 import PREV from "./assets/prev.png";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import CKEditor from "@ckeditor/ckeditor5-react";
 
 const Home = () => {
   const [loader, setLoader] = useState(false);
@@ -11,6 +13,7 @@ const Home = () => {
   const [formData, setFormData] = useState({
     senderFirstName: "",
     senderLastName: "",
+    senderEmail: "davidthorlani@gmail.com",
     recipientEmail: "",
     recipientFirstname: "",
     subject: "",
@@ -21,6 +24,7 @@ const Home = () => {
   const formDetails = {
     senderFirstName: formData.senderFirstName,
     senderLastName: formData.senderLastName,
+    senderEmail: formData.senderEmail,
     recipientEmail: formData.recipientEmail,
     recipientFirstname: formData.recipientFirstname,
     subject: formData.subject,
@@ -58,6 +62,7 @@ const Home = () => {
               ...formData,
               senderFirstName: "",
               senderLastName: "",
+              senderEmail: "davidthorlani@gmail.com",
               recipientEmail: "",
               recipientFirstname: "",
               subject: "",
@@ -75,6 +80,12 @@ const Home = () => {
     }
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleAccordion = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="container">
       {loader && (
@@ -89,101 +100,100 @@ const Home = () => {
         </div>
       )}
       <h1>Mailer</h1>
-      {formStage === 0 ? (
-        <form>
-          <div className="second">
-            <div className="col">
-              <label htmlFor="Firstname">Sender's first name</label>
-              <input
-                type="text"
-                name="senderFirstName"
-                value={formData.senderFirstName}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col">
-              <label htmlFor="Lastname">Sender's last name</label>
-              <input
-                type="text"
-                name="senderLastName"
-                value={formData.senderLastName}
-                onChange={handleChange}
-              />
-            </div>
+      <form>
+        <div className="second">
+          <div className="col">
+            <label htmlFor="Firstname">Sender's first name</label>
+            <input
+              type="text"
+              name="senderFirstName"
+              value={formData.senderFirstName}
+              onChange={handleChange}
+            />
           </div>
-          <div className="second">
-            <div className="col">
-              <label htmlFor="Firstname">Recipient email</label>
-              <input
-                type="text"
-                name="recipientEmail"
-                value={formData.recipientEmail}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col">
-              <label htmlFor="Lastname">Recipient first name</label>
-              <input
-                type="text"
-                name="recipientFirstname"
-                value={formData.recipientFirstname}
-                onChange={handleChange}
-              />
-            </div>
+          <div className="col">
+            <label htmlFor="Lastname">Sender's last name</label>
+            <input
+              type="text"
+              name="senderLastName"
+              value={formData.senderLastName}
+              onChange={handleChange}
+            />
           </div>
-          <button onClick={() => setFormStage(1)} type="button">
-            <p>Next</p>
-          </button>
-        </form>
-      ) : (
-        <form>
+        </div>
+        <div className="first col">
+          <label htmlFor="subject">Sender's email</label>
+          <input
+            type="email"
+            name="senderEmail"
+            value={formData.senderEmail}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="second">
+          <div className="col">
+            <label htmlFor="Firstname">Recipient email</label>
+            <input
+              type="text"
+              name="recipientEmail"
+              value={formData.recipientEmail}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="col">
+            <label htmlFor="Lastname">Recipient first name</label>
+            <input
+              type="text"
+              name="recipientFirstname"
+              value={formData.recipientFirstname}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <button onClick={handleSubmit} type="button">
+          <p>Submit</p>
+        </button>
+        {errorMessage && (
+          <p style={{ color: "red" }}>An error occurred with the network</p>
+        )}
+        <div style={{ marginTop: "10px" }} className="first">
+          <div className="accordion-header" onClick={toggleAccordion}>
+            <span>Show email content</span>
+            <i
+              style={{ transform: !isOpen ? "rotate(-90deg)" : "rotate(0deg)" }}
+              className={`icon ${isOpen ? "open" : ""}`}
+            >
+              &#9660;
+            </i>
+          </div>
           <div
             style={{
               width: "100%",
               height: "fit-content",
-              display: "flex",
-              justifyContent: "end",
-              alignItems: "end",
+              display: isOpen ? "block" : "none",
+              margin: "15px 0px",
             }}
-            onClick={()=>setFormStage(0)}
           >
-            <div
-              style={{
-                padding: "5px",
-                backgroundColor: "white",
-                width: "fit-content",
-                height: "fit-content",
-                borderRadius: "50%"
-              }}
-            >
-              <img src={PREV} alt="previous button" width={18} height={18} />
+            <div className="first col">
+              <label htmlFor="subject">Subject Matter</label>
+              <input
+                type="text"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="first col">
+              <label htmlFor="message">Message</label>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+              />
             </div>
           </div>
-          <div className="first col">
-            <label htmlFor="subject">Subject Matter</label>
-            <input
-              type="text"
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="first col">
-            <label htmlFor="message">Message</label>
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-            />
-          </div>
-          <button onClick={handleSubmit} type="button">
-            <p>Submit</p>
-          </button>
-          {errorMessage && (
-            <p style={{ color: "red" }}>An error occurred with the network</p>
-          )}
-        </form>
-      )}
+        </div>
+      </form>
     </div>
   );
 };
