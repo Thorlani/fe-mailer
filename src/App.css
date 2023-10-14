@@ -42,10 +42,9 @@ input {
   text-indent: 5px;
 }
 
-textarea {
+.textarea {
   outline: none;
   padding: 5px;
-  min-height: 150px;
 }
 
 .col {

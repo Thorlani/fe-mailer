@@ -3,6 +3,8 @@ import "./App.css";
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
 import PREV from "./assets/prev.png";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const Home = () => {
   const [loader, setLoader] = useState(false);
@@ -15,10 +17,10 @@ const Home = () => {
     recipientEmail: "",
     recipientFirstname: "",
     subject: "",
-    message: "",
   });
 
-  console.log(formData.message);
+  const [message, setMessage] = useState("");
+
   const url = `${import.meta.env.VITE_BASE_SEND_MAIL_API_URL}`;
   const formDetails = {
     senderFirstName: formData.senderFirstName,
@@ -27,6 +29,7 @@ const Home = () => {
     recipientEmail: formData.recipientEmail,
     recipientFirstname: formData.recipientFirstname,
     subject: formData.subject,
+    message: message,
   };
 
   const handleChange = (event) => {
@@ -42,7 +45,7 @@ const Home = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-      formData.message === "" ||
+      message === "" ||
       formData.subject === "" ||
       formData.senderFirstName === "" ||
       formData.senderLastName === "" ||
@@ -65,7 +68,6 @@ const Home = () => {
               recipientEmail: "",
               recipientFirstname: "",
               subject: "",
-              message: "",
             });
             setFormStage(0);
           } else if (res.status === 404) {
@@ -186,10 +188,12 @@ const Home = () => {
             </div>
             <div className="first col">
               <label htmlFor="message">Message</label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
+              <ReactQuill
+                style={{ fontFamily: "Helvetica" }}
+                className="textarea"
+                theme="snow"
+                value={message}
+                onChange={setMessage}
               />
             </div>
           </div>
