@@ -11,8 +11,7 @@ const Home = () => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [formStage, setFormStage] = useState(0);
   const [formData, setFormData] = useState({
-    senderFirstName: "",
-    senderLastName: "",
+    senderName: "",
     senderEmail: "davidthorlani@gmail.com",
     recipientEmail: "",
     recipientFirstname: "",
@@ -23,8 +22,7 @@ const Home = () => {
 
   const url = `${import.meta.env.VITE_BASE_SEND_MAIL_API_URL}`;
   const formDetails = {
-    senderFirstName: formData.senderFirstName,
-    senderLastName: formData.senderLastName,
+    senderName: formData.senderName,
     senderEmail: formData.senderEmail,
     recipientEmail: formData.recipientEmail,
     recipientFirstname: formData.recipientFirstname,
@@ -47,8 +45,7 @@ const Home = () => {
     if (
       message === "" ||
       formData.subject === "" ||
-      formData.senderFirstName === "" ||
-      formData.senderLastName === "" ||
+      formData.senderName === "" ||
       formData.recipientEmail === "" ||
       formData.recipientFirstname === ""
     ) {
@@ -62,12 +59,9 @@ const Home = () => {
             setLoader(false);
             setFormData({
               ...formData,
-              senderFirstName: "",
-              senderLastName: "",
-              senderEmail: "davidthorlani@gmail.com",
+              senderName: "",
               recipientEmail: "",
               recipientFirstname: "",
-              subject: "",
             });
             setFormStage(0);
           } else if (res.status === 404) {
@@ -103,21 +97,12 @@ const Home = () => {
       <h1>Mailer</h1>
       <form>
         <div className="second">
-          <div className="col">
-            <label htmlFor="Firstname">Sender's first name</label>
+          <div style={{width: "100%"}} className="col">
+            <label htmlFor="Firstname">Sender's name</label>
             <input
               type="text"
-              name="senderFirstName"
-              value={formData.senderFirstName}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col">
-            <label htmlFor="Lastname">Sender's last name</label>
-            <input
-              type="text"
-              name="senderLastName"
-              value={formData.senderLastName}
+              name="senderName"
+              value={formData.senderName}
               onChange={handleChange}
             />
           </div>

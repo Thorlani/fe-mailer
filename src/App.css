@@ -131,7 +131,7 @@ button {
 }
 
 
-@media (max-width: 426px) {
+@media (max-width: 540px) {
   form {
     width: 310px;
   }
