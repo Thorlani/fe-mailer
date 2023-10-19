@@ -8,6 +8,7 @@ import {
 import SignIn from "./SignIn";
 import GuardRoute from "./GuardRoute";
 import Home from "./Home";
+import Auto from "./Auto";
 
 const Root = () => {
   return (
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route index element={<SignIn />} />
       <Route element={<GuardRoute />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/auto" element={<Auto />} />
       </Route>
     </Route>
   )

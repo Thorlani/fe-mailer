@@ -2,14 +2,12 @@ import { useState } from "react";
 import "./App.css";
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
-import PREV from "./assets/prev.png";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 const Home = () => {
   const [loader, setLoader] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
-  const [formStage, setFormStage] = useState(0);
   const [formData, setFormData] = useState({
     senderName: "",
     senderEmail: "davidthorlani@gmail.com",
@@ -63,7 +61,6 @@ const Home = () => {
               recipientEmail: "",
               recipientFirstname: "",
             });
-            setFormStage(0);
           } else if (res.status === 404) {
           }
         })
