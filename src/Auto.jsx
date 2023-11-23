@@ -1,37 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 const Auto = () => {
+  //Store the response from the file upload
   const [data, setData] = useState([]);
+  //Store the senders from the file upload
+  const [sender, setSender] = useState([]);
+  //Store the recipients from the file upload
+  const [recipient, setRecipient] = useState([]);
+  //I want to use it to create a loader
   const [isActive, setIsActive] = useState(false);
+  //to store the file being uploaded
   const [selectedFile, setSelectedFile] = useState(null);
+  //to store the details of the form
   const [formData, setFormData] = useState({
-    senderName: "Chris Rebertson",
     senderEmail: "davidthorlani@gmail.com",
     subject: "FOLLOW UP INSTRUCTIONS",
   });
+  //Stores the response after a successful submission
   const [sentMailsReciept, setSentMailsReciept] = useState([]);
 
+  //Body of the message
   const [message, setMessage] = useState("");
 
+  //Post URL
   const url = `${import.meta.env.VITE_BASE_SEND_MAIL_API_URL}`;
-  const formDetails = {
-    senderName: formData.senderName,
-    senderEmail: formData.senderEmail,
-    recipientEmail: formData.recipientEmail,
-    recipientFirstname: formData.recipientFirstname,
-    subject: formData.subject,
-    message: message,
-  };
 
+   //HandleChange for the file upload inputs
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
   };
 
+  //HandleChange for the form inputs
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData((prevCredientials) => {
@@ -42,6 +46,23 @@ const Auto = () => {
     });
   };
 
+  //The function that splits the sender and recipient from the data into their respective state
+  useEffect(() => {
+    setSender(
+      data.filter(
+        (item) =>
+          item.Column1 !== "" && item.Column2 === "" && item.Column3 === ""
+      )
+    );
+    setRecipient(
+      data.filter((item) => item.Column1 !== "" && item.Column3 !== "")
+    );
+  }, [data]);
+
+  //Logging out senders and recicients
+  console.log(sender, recipient);
+
+  //The function to upload the collected file
   const handleFileUpload = () => {
     if (selectedFile) {
       const formData = new FormData();
@@ -63,23 +84,26 @@ const Auto = () => {
     }
   };
 
+  //The function to send the submission
   const sendTheMails = (e) => {
     e.preventDefault();
-    data.map((mails) => {
+    recipient.forEach((recipient, index) => {
+      const senderName = sender[index]?.Column1;
+
       console.log("Mail Details", {
-        senderName: formData.senderName,
         senderEmail: formData?.senderEmail,
-        recipientEmail: mails?.EMAIL,
-        recipientFirstname: mails?.FIRST_NAME,
+        senderName: senderName,
+        recipientEmail: recipient?.Column3,
+        recipientFirstname: recipient?.Column1,
         subject: formData.subject,
         message: message,
       });
       axios
         .post(url, {
-          senderName: formData.senderName,
           senderEmail: formData?.senderEmail,
-          recipientEmail: mails?.EMAIL,
-          recipientFirstname: mails?.FIRST_NAME,
+          senderName: senderName,
+          recipientEmail: recipient?.Column3,
+          recipientFirstname: recipient?.Column1,
           subject: formData.subject,
           message: message,
         })
@@ -95,7 +119,7 @@ const Auto = () => {
         });
     });
   };
-  console.log(data);
+
   return (
     <div
       style={{
@@ -121,17 +145,6 @@ const Auto = () => {
           <button type="button" onClick={handleFileUpload}>
             Upload
           </button>
-          <div className="first col">
-            <div style={{ width: "100%" }} className="col">
-              <label htmlFor="Firstname">Sender's name</label>
-              <input
-                type="text"
-                name="senderName"
-                value={formData.senderName}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
           <div className="first col">
             <label htmlFor="subject">Sender's email</label>
             <input
