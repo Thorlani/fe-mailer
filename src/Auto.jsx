@@ -29,7 +29,7 @@ const Auto = () => {
   //Post URL
   const url = `${import.meta.env.VITE_BASE_SEND_MAIL_API_URL}`;
 
-   //HandleChange for the file upload inputs
+  //HandleChange for the file upload inputs
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
@@ -131,6 +131,24 @@ const Auto = () => {
         alignItems: "center",
       }}
     >
+      <div style={{
+        width: "200px",
+        height: "fit-content",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}>
+        <div>
+          <p>
+            sender: <span>{sender.length}</span>
+          </p>
+        </div>
+        <div>
+          <p>
+            recipient: <span>{recipient.length}</span>
+          </p>
+        </div>
+      </div>
       <form style={{ width: "fit-content" }}>
         <div
           style={{
