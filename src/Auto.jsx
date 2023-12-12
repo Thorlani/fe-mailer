@@ -45,14 +45,11 @@ const Auto = () => {
       };
     });
   };
-
+  console.log(data);
   //The function that splits the sender and recipient from the data into their respective state
   useEffect(() => {
     setSender(
-      data.filter(
-        (item) =>
-          item.Column1 !== "" && item.Column2 === "" && item.Column3 === ""
-      )
+      data.filter((item) => item.Column1 !== "" && item.Column3 === "")
     );
     setRecipient(
       data.filter((item) => item.Column1 !== "" && item.Column3 !== "")
@@ -84,11 +81,13 @@ const Auto = () => {
     }
   };
 
+  // const senderName1 = `${sender[0]?.Column1 + " " + sender[0]?.Column2}`;
+
   //The function to send the submission
   const sendTheMails = (e) => {
     e.preventDefault();
     recipient.forEach((recipient, index) => {
-      const senderName = sender[index]?.Column1;
+      const senderName = `${sender[index]?.Column1 + " " + sender[index]?.Column2}`;
 
       console.log("Mail Details", {
         senderEmail: formData?.senderEmail,
@@ -131,13 +130,15 @@ const Auto = () => {
         alignItems: "center",
       }}
     >
-      <div style={{
-        width: "200px",
-        height: "fit-content",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}>
+      <div
+        style={{
+          width: "200px",
+          height: "fit-content",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <div>
           <p>
             sender: <span>{sender.length}</span>
